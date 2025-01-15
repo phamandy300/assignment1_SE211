@@ -5,7 +5,7 @@ import static java.lang.Integer.parseInt;
 public class Server {
     public static void main(String[] args) throws Exception {
         try {
-            int port = parseInt(args[1]);
+            int port = parseInt(args[0]);
             ServerSocket serverSocket = new ServerSocket(port);
             Socket clientSocket = serverSocket.accept();
             BufferedReader in = new BufferedReader(
