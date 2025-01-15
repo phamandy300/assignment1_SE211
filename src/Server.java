@@ -19,4 +19,17 @@ public class Server {
             throw new Exception(e);
         }
     }
+
+    public void logMessage() {}
+
+    public void printLog() {}
+
+    public void printRecent() {}
+
+    public void printText() {}
+
+    public void quit() {}
+
+    //invalid command gerror handling
 }
+
