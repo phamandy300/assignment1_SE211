@@ -20,22 +20,35 @@ public class Server {
             System.err.println("Usage: java Server <port>");
             return;
         }
+        ServerSocket serverSocket = null;
+        Socket clientSocket = null;
 
         try {
             int port = parseInt(args[0]);
-            ServerSocket serverSocket = new ServerSocket(port);
-            Socket clientSocket = serverSocket.accept();
-
+            serverSocket = new ServerSocket(port);
+            clientSocket = serverSocket.accept();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
+                if (inputLine.equals("quit")) {
+                    System.out.println("Shutting down server.");
+                    break;
+                }
                 handleInput(inputLine);
             }
 
         } catch (Exception e) {
             e.printStackTrace(); // change maybe
+        } finally {
+            try {
+                if (clientSocket != null) clientSocket.close();
+                if (serverSocket != null) serverSocket.close();
+                System.out.println("Server sockets closed.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -58,9 +71,6 @@ public class Server {
                     break;
                 case "printtext":
                     printText(stInput.nextToken());
-                    break;
-                case "quit":
-                    quit();
                     break;
                 case "help":
                     listCommands();
@@ -120,10 +130,6 @@ public class Server {
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
         }
-    }
-
-    private void quit() {
-
     }
 
     private void listCommands() {

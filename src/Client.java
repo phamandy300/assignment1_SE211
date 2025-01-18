@@ -14,10 +14,11 @@ public class Client {
             System.err.println("Usage: java Client <port>");
             return;
         }
+        Socket echoSocket = null;
 
         try {
             int port = parseInt(args[0]);
-            Socket echoSocket = new Socket("localhost", port);
+            echoSocket = new Socket("localhost", port);
             PrintWriter out =
                     new PrintWriter(echoSocket.getOutputStream(), true);
             BufferedReader stdIn =
@@ -25,13 +26,20 @@ public class Client {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
+                if (userInput.equals("quit")) {
+                    System.out.println("Shutting down client.");
+                    break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (echoSocket != null) echoSocket.close();
+                System.out.println("Server sockets closed.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    private void quit() {
-
     }
 }
