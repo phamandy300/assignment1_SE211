@@ -20,6 +20,8 @@ public class Server {
         }
     }
 
+    public void handleInput() {}
+
     public void logMessage() {}
 
     public void printLog() {}
